@@ -17,7 +17,7 @@ const drawBox = (x, y) => {
 
 // TODO: Add orientation also (now works only horizontally)
 const drawShip = (x, y, size, orientation) => {
-  for (let i = 1; i <= size; i++) {
+  for (let i = 0; i < size; i++) {
     drawBox(x + CELL_DIMENSION * i, y)
   }
 }
@@ -88,10 +88,25 @@ const drawShipsPicker = () => {
   const SPACE_BETWEEN = 200
   const HORIZONTAL_PADDING =
     FIELD_DIMENSION + CELL_DIMENSION + SPACINGS.SCREEN_PADDING + SPACE_BETWEEN
-  const VERTICAL_PADDING = SPACINGS.SCREEN_PADDING + CELL_DIMENSION
   const Y_SPACING_STEP = 20
 
   for (let i = 1; i <= MAX_SHIP_SIZE; i++) {
-    drawShip(HORIZONTAL_PADDING, i * CELL_DIMENSION + i * Y_SPACING_STEP, i)
+    const gapHeight = i * Y_SPACING_STEP
+    drawShip(HORIZONTAL_PADDING, i * CELL_DIMENSION + gapHeight, i)
+    pickerShipsPositions[i] = [
+      HORIZONTAL_PADDING,
+      i * CELL_DIMENSION + gapHeight,
+    ]
   }
+}
+
+const drawDraggingGhost = () => {
+  if (!draggingGhost) {
+    return
+  }
+  const [x, y, shipLength] = draggingGhost
+
+  stroke(PALETTE.GHOST)
+  drawShip(x, y, shipLength)
+  stroke(PALETTE.BLACK)
 }
